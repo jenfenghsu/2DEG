@@ -1,1 +1,21 @@
-hello world
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>2DEG calculator</title>
+	</head>
+	<body>
+		\(l_B=\sqrt{\hbar/eB}=25.7nm/\sqrt{B(T)}\): <input type="number" id="lb" disabled=true/>(nm)
+		<button onClick="cal_lb()"> calc </button>
+		B (T): <input type="number" id="B"/>
+	</body>
+	<script>
+		const e = 1.602176565e-19//C, Elementary charge
+		const h = 6.62606957e-34
+		const hbar = 1.054571726e-34
+		function cal_lb(){
+			document.getElementById('lb').value=Math.sqrt(hbar/e/document.getElementById('B').value)*1.e9
+		}
+	</script>
+	<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+</html>
