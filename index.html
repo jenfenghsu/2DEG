@@ -5,17 +5,98 @@
 		<title>2DEG calculator</title>
 	</head>
 	<body>
-		\(l_B=\sqrt{\hbar/eB}=25.7nm/\sqrt{B(T)}\): <input type="number" id="lb" disabled=true/>(nm)
-		<button onClick="cal_lb()"> calc </button>
-		B (T): <input type="number" id="B"/>
+		<table>
+			<tr>
+				<td>$l_B=\sqrt{\hbar/eB}=25.7nm/\sqrt{B(T)}$</td>
+				<td><input style="width:100px" type="number" id="lb" disabled=true/></td>
+				<td><button onClick="cal_lb()"> calc </button></td>
+				<td>B: <input style="width:100px" type="number" id="lb_b"/></td>
+			</tr>
+			<tr>
+				<td>$R_c=\frac{\sqrt{2\pi n}\hbar}{Be}=52.2nm\frac{\sqrt{n (10^{11} cm^{-2})}}{B(T)}$</td>
+				<td><input style="width:100px" type="number" id="rc" disabled=true/></td>
+				<td><button onClick="cal_rc()"> calc </button></td>
+				<td>B: <input style="width:100px" type="number" id="rc_b"/></td>
+				<td>n: <input style="width:100px" type="number" id="rc_n"/></td>
+			</tr>
+			<tr>
+				<td>$l=\frac{\sqrt{2\pi n}\hbar\mu}{e}=5.22um \sqrt{n (10^{11} cm^{-2})} \mu (10^6 cm^2/Vs)$</td>
+			</tr>
+			<tr>
+				<td>$\tau_{tr}=\frac{\mu m^*}{e}=569ps \mu (10^6 cm^2/Vs) m^* (m_e)$</td>
+			</tr>
+			<tr>
+				<td>$B_{\nu}=\frac{nh}{enu}=4.14T\frac{ n (10^{11} cm^{-2})}{\nu}$</td>
+			</tr>
+			<tr>
+				<td>$n=B\nu\frac{e}{h}=\frac{B(T)\nu}{4.14}\times 10^{11} cm^{-2}$</td>
+			</tr>
+			<tr>
+				<td>$n=\frac{1}{\Delta(1/B)}\frac{e}{h}=\frac{\Delta\nu}{|1/B_1-1/B_2|}\frac{1}{4.14}\times 10^{11} cm^{-2}$</td>
+			</tr>
+			<tr>
+				<td>$n=\frac{B}{eR_{xy}}=\frac{B(T)}{R_{xy}(k\Omega)}6.24\times 10^{11} cm^{-2}$</td>
+				<td><input style="width:100px" type="number" id="nrxy" disabled=true/></td>
+				<td><button onClick="cal_nrxy()"> calc </button></td>
+				<td>B<sub>1</sub>: <input style="width:100px" type="number" id="nrxy_b1"/></td>
+				<td>R<sub>xy1</sub>: <input style="width:100px" type="number" id="nrxy_xy1"/></td>
+				<td>B<sub>2</sub>: <input style="width:100px" type="number" id="nrxy_b2"/ value=0></td>
+				<td>R<sub>xy2</sub>: <input style="width:100px" type="number" id="nrxy_xy2"/ value=0></td>
+			</tr>
+			<tr>
+				<td>$E_z=g\mu_B B= g B(T)0.0579meV$</td>
+			</tr>
+			<tr>
+				<td>$\hbar\omega_c=\frac{B(T)}{m^*(m_e)}0.116meV$</td>
+			</tr>
+			<tr>
+				<td>$\mu=\frac{1}{n e R_{xx}}\frac{l}{w}=62.4\times 10^6 cm^2/Vs \frac{1}{n (10^{11} cm^{-2}) R_{xx}(\Omega)}\square$</td>
+			</tr>
+			<tr>
+				<td>$k_F=\sqrt{2\pi n}=0.0793nm^{-1}\sqrt{n (10^{11} cm^{-2})}$</td>
+			</tr>
+			<tr>
+				<td>$\lambda_F=2\pi/k_F=\sqrt{\frac{2\pi}{n}}=79.3nm/\sqrt{n (10^{11} cm^{-2})}$</td>
+			</tr>
+			<tr>
+				<td>$E_F=\hbar^2k_F^2/2m^*=0.239meV\frac{n(10^{11} cm^{-2})}{m^*(m_e)}$</td>
+			</tr>
+			<tr>
+				<td>$N(E)\equiv \frac{m^*}{\pi\hbar^2}=4.18\times10^{11} /(cm^{2}meV) m^*(m_e)$</td>
+			</tr>
+		</table>
 	</body>
-	<script>
+	<script type="text/javascript">
+		//contant
 		const e = 1.602176565e-19//C, Elementary charge
+		const eps0 = 8.854187817e-12//F/m, vacuum permittivity
 		const h = 6.62606957e-34
 		const hbar = 1.054571726e-34
+		const me = 9.10938291e-31
+		const kb = 1.3806505e-23
+		const u = 1.660538921e-27
+		const c = 299792458
+		const miub = 9.27400949e-24//bo er ci zi?
+		//end contant
+		
 		function cal_lb(){
-			document.getElementById('lb').value=Math.sqrt(hbar/e/document.getElementById('B').value)*1.e9
+			let b = document.getElementById('lb_b').value;
+			document.getElementById('lb').value=Math.sqrt(hbar/e/b)*1.e9;
+		}
+		function cal_rc(){
+			let b = document.getElementById('rc_b').value;
+			let n = document.getElementById('rc_n').value;
+			document.getElementById('rc').value=Math.sqrt(2*Math.PI*n*1.e15)*hbar/b/e*1.e9;
 		}
 	</script>
-	<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+	<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  inlineMath: [ ['$','$'] ],
+			  displayMath: [ ["\\[","\\]"] ],
+			  processEscapes: true
+			}
+		  });
+	</script>
+	<script type="text/javascript" src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 </html>
