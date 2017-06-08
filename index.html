@@ -3,6 +3,14 @@
 	<head>
 		<meta charset="UTF-8"/>
 		<title>2DEG calculator</title>
+        <style type="text/css">
+            tr{
+                 background-color:#F7FDFC;
+            }
+            td{
+                text-align:center;
+            }
+        </style> 
 	</head>
 	<body>
 		<table>
@@ -10,38 +18,59 @@
 				<td>$l_B=\sqrt{\hbar/eB}=25.7nm/\sqrt{B(T)}$</td>
 				<td><input style="width:100px" type="number" id="lb" disabled=true/></td>
 				<td><button onClick="cal_lb()"> calc </button></td>
-				<td>B: <input style="width:100px" type="number" id="lb_b"/></td>
+				<td>$B$:</td><td><input style="width:100px" type="number" id="lb_b"/></td>
 			</tr>
 			<tr>
 				<td>$R_c=\frac{\sqrt{2\pi n}\hbar}{Be}=52.2nm\frac{\sqrt{n (10^{11} cm^{-2})}}{B(T)}$</td>
 				<td><input style="width:100px" type="number" id="rc" disabled=true/></td>
 				<td><button onClick="cal_rc()"> calc </button></td>
-				<td>B: <input style="width:100px" type="number" id="rc_b"/></td>
-				<td>n: <input style="width:100px" type="number" id="rc_n"/></td>
+				<td>$B$:</td><td><input style="width:100px" type="number" id="rc_b"/></td>
+				<td>$n$:</td><td><input style="width:100px" type="number" id="rc_n"/></td>
 			</tr>
 			<tr>
 				<td>$l=\frac{\sqrt{2\pi n}\hbar\mu}{e}=5.22um \sqrt{n (10^{11} cm^{-2})} \mu (10^6 cm^2/Vs)$</td>
+				<td><input style="width:100px" type="number" id="l" disabled=true/></td>
+				<td><button onClick="cal_l()"> calc </button></td>
+				<td>$\mu$:</td><td><input style="width:100px" type="number" id="l_mu"/></td>
+				<td>$n$:</td><td><input style="width:100px" type="number" id="l_n"/></td>
 			</tr>
 			<tr>
 				<td>$\tau_{tr}=\frac{\mu m^*}{e}=569ps \mu (10^6 cm^2/Vs) m^* (m_e)$</td>
+				<td><input style="width:100px" type="number" id="tau_tr" disabled=true/></td>
+				<td><button onClick="cal_tau_tr()"> calc </button></td>
+				<td>$\mu$:</td><td><input style="width:100px" type="number" id="tau_tr_mu"/></td>
+                <td>$m^*$:</td><td><input style="width:100px" type="number" id="tau_tr_m"/></td>
 			</tr>
 			<tr>
 				<td>$B_{\nu}=\frac{nh}{e\nu}=4.14T\frac{ n (10^{11} cm^{-2})}{\nu}$</td>
+				<td><input style="width:100px" type="number" id="b_nu" disabled=true/></td>
+				<td><button onClick="cal_b_nu()"> calc </button></td>
+				<td>$\nu$:</td><td><input style="width:100px" type="number" id="b_nu_nu"/></td>
+                <td>$n$:</td><td><input style="width:100px" type="number" id="b_nu_n"/></td>
 			</tr>
 			<tr>
 				<td>$n=B\nu\frac{e}{h}=\frac{B(T)\nu}{4.14}\times 10^{11} cm^{-2}$</td>
+				<td><input style="width:100px" type="number" id="n_bnu" disabled=true/></td>
+				<td><button onClick="cal_n_bnu()"> calc </button></td>
+				<td>$B$:</td><td><input style="width:100px" type="number" id="n_bnu_b"/></td>
+                <td>$\nu$:</td><td><input style="width:100px" type="number" id="n_bnu_nu"/></td>
 			</tr>
 			<tr>
 				<td>$n=\frac{1}{\Delta(1/B)}\frac{e}{h}=\frac{\Delta\nu}{|1/B_1-1/B_2|}\frac{1}{4.14}\times 10^{11} cm^{-2}$</td>
+				<td><input style="width:100px" type="number" id="n_dnu" disabled=true/></td>
+				<td><button onClick="cal_n_dnu()"> calc </button></td>
+				<td>$B_1$:</td><td><input style="width:100px" type="number" id="n_dnu_b1"/></td>
+				<td>$B_2$:</td><td><input style="width:100px" type="number" id="n_dnu_b2"/></td>
+                <td>$\Delta\nu$:</td><td><input style="width:100px" type="number" id="n_dnu_d"/></td>
 			</tr>
 			<tr>
 				<td>$n=\frac{B}{eR_{xy}}=\frac{B(T)}{R_{xy}(k\Omega)}6.24\times 10^{11} cm^{-2}$</td>
 				<td><input style="width:100px" type="number" id="nrxy" disabled=true/></td>
 				<td><button onClick="cal_nrxy()"> calc </button></td>
-				<td>B<sub>1</sub>: <input style="width:100px" type="number" id="nrxy_b1"/></td>
-				<td>R<sub>xy1</sub>: <input style="width:100px" type="number" id="nrxy_xy1"/></td>
-				<td>B<sub>2</sub>: <input style="width:100px" type="number" id="nrxy_b2"/ value=0></td>
-				<td>R<sub>xy2</sub>: <input style="width:100px" type="number" id="nrxy_xy2"/ value=0></td>
+				<td>$B_1$:</td><td><input style="width:100px" type="number" id="nrxy_b1"/></td>
+				<td>$R_{xy1}$:</td><td><input style="width:100px" type="number" id="nrxy_xy1"/></td>
+				<td>$B_2$:</td><td><input style="width:100px" type="number" id="nrxy_b2"/ value=0></td>
+				<td>$R_{xy2}$:</td><td><input style="width:100px" type="number" id="nrxy_xy2"/ value=0></td>
 			</tr>
 			<tr>
 				<td>$E_z=g\mu_B B= g B(T)0.0579meV$</td>
@@ -88,7 +117,32 @@
 			let n = document.getElementById('rc_n').value;
 			document.getElementById('rc').value=Math.sqrt(2*Math.PI*n*1.e15)*hbar/b/e*1.e9;
 		}
-	</script>
+		function cal_l(){
+			let n = document.getElementById('l_n').value;
+			let mu = document.getElementById('l_mu').value;
+			document.getElementById('l').value=Math.sqrt(2*Math.PI*n*1.e15)*hbar*mu*100./e*1.e6;
+		}
+		function cal_tau_tr(){
+			let m = document.getElementById('tau_tr_m').value;
+			let mu = document.getElementById('tau_tr_mu').value;
+			document.getElementById('tau_tr').value=mu*100.*m*me/e*1.e12;
+		}
+		function cal_b_nu(){
+			let nu = document.getElementById('b_nu_nu').value;
+			let n = document.getElementById('b_nu_n').value;
+			document.getElementById('b_nu').value=n*1.e15*h/e/nu;
+		}
+		function cal_nrxy(){
+			let b1 = document.getElementById('nrxy_b1').value;
+			let b2 = document.getElementById('nrxy_b2').value;
+			let rxy1 = document.getElementById('nrxy_xy1').value;
+            let rxy2 = document.getElementById('nrxy_xy2').value;
+			document.getElementById('nrxy').value=(b1-b2)/(rxy1-rxy2)/1000./e/1.e15;
+		}
+        
+        
+        
+        </script>
 	<script type="text/x-mathjax-config">
 		  MathJax.Hub.Config({
 			tex2jax: {
