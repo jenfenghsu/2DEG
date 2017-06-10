@@ -74,24 +74,59 @@
 			</tr>
 			<tr>
 				<td>$E_z=g\mu_B B= g B(T)0.0579meV$</td>
+				<td><input style="width:100px" type="number" id="ez" disabled=true/></td>
+				<td><button onClick="cal_ez()"> calc </button></td>
+				<td>$B$:</td><td><input style="width:100px" type="number" id="ez_b"/></td>
+				<td>$g$:</td><td><input style="width:100px" type="number" id="ez_g"/></td>
 			</tr>
 			<tr>
 				<td>$\hbar\omega_c=\frac{B(T)}{m^*(m_e)}0.116meV$</td>
+				<td><input style="width:100px" type="number" id="hw" disabled=true/></td>
+				<td><button onClick="cal_hw()"> calc </button></td>
+				<td>$B$:</td><td><input style="width:100px" type="number" id="hw_b"/></td>
+				<td>$m^*$:</td><td><input style="width:100px" type="number" id="hw_m"/></td>
 			</tr>
 			<tr>
 				<td>$\mu=\frac{1}{n e R_{xx}}\frac{l}{w}=62.4\times 10^6 cm^2/Vs \frac{1}{n (10^{11} cm^{-2}) R_{xx}(\Omega)}\square$</td>
+				<td><input style="width:100px" type="number" id="murxx" disabled=true/></td>
+				<td><button onClick="cal_murxx()"> calc </button></td>
+				<td>$R_{xx}$:</td><td><input style="width:100px" type="number" id="murxx_rxx"/></td>
+                <td>$n$:</td><td><input style="width:100px" type="number" id="murxx_n"/></td>
+				<td>$l$:</td><td><input style="width:100px" type="number" id="murxx_l"/ value=1></td>
+                <td>$w$:</td><td><input style="width:100px" type="number" id="murxx_w"/ value=1></td>
 			</tr>
 			<tr>
 				<td>$k_F=\sqrt{2\pi n}=0.0793nm^{-1}\sqrt{n (10^{11} cm^{-2})}$</td>
+				<td><input style="width:100px" type="number" id="kfn" disabled=true/></td>
+				<td><button onClick="cal_kfn()"> calc </button></td>
+                <td>$n$:</td><td><input style="width:100px" type="number" id="kfn_n"/></td>
 			</tr>
 			<tr>
 				<td>$\lambda_F=2\pi/k_F=\sqrt{\frac{2\pi}{n}}=79.3nm/\sqrt{n (10^{11} cm^{-2})}$</td>
+				<td><input style="width:100px" type="number" id="lamn" disabled=true/></td>
+				<td><button onClick="cal_lamn()"> calc </button></td>
+                <td>$n$:</td><td><input style="width:100px" type="number" id="lamn_n"/></td>
 			</tr>
 			<tr>
 				<td>$E_F=\hbar^2k_F^2/2m^*=0.239meV\frac{n(10^{11} cm^{-2})}{m^*(m_e)}$</td>
+				<td><input style="width:100px" type="number" id="efnm" disabled=true/></td>
+				<td><button onClick="cal_efnm()"> calc </button></td>
+                <td>$n$:</td><td><input style="width:100px" type="number" id="efnm_n"/></td>
+                <td>$m^*$:</td><td><input style="width:100px" type="number" id="efnm_m"/></td>
 			</tr>
 			<tr>
 				<td>$N(E)\equiv \frac{m^*}{\pi\hbar^2}=4.18\times10^{11}m^*(m_e)/(cm^{2}meV)$</td>
+				<td><input style="width:100px" type="number" id="nem" disabled=true/></td>
+				<td><button onClick="cal_nem()"> calc </button></td>
+                <td>$m^*$:</td><td><input style="width:100px" type="number" id="nem_m"/></td>
+			</tr>
+			<tr>
+				<td>$E_n = \frac{\hbar^2 \pi^2}{2 m d^2}n^2 = \frac{h^2}{8 m d^2}n^2 = 376 meV \frac{n^2}{m^* (m_e) d(nm)^2}$</td>
+				<td><input style="width:100px" type="number" id="enmd" disabled=true/></td>
+				<td><button onClick="cal_enmd()"> calc </button></td>
+                <td>$m^*$:</td><td><input style="width:100px" type="number" id="enmd_m"/></td>
+                <td>$d$:</td><td><input style="width:100px" type="number" id="enmd_d"/></td>
+                <td>$n$:</td><td><input style="width:100px" type="number" id="enmd_n"/ value=1></td>
 			</tr>
 		</table>
 	</body>
@@ -132,6 +167,17 @@
 			let n = document.getElementById('b_nu_n').value;
 			document.getElementById('b_nu').value=n*1.e15*h/e/nu;
 		}
+        function cal_n_bnu(){
+			let nu = document.getElementById('n_bnu_nu').value;
+			let b = document.getElementById('n_bnu_b').value;
+			document.getElementById('n_bnu').value=b*nu*e/h/1.e15;
+		}
+        function cal_n_dnu(){
+			let d = document.getElementById('n_dnu_d').value;
+			let b1 = document.getElementById('n_dnu_b1').value;
+			let b2 = document.getElementById('n_dnu_b2').value;
+            document.getElementById('n_dnu').value=d/Math.abs(1./b1-1./b2)*e/h/1.e15;
+		}
 		function cal_nrxy(){
 			let b1 = document.getElementById('nrxy_b1').value;
 			let b2 = document.getElementById('nrxy_b2').value;
@@ -139,9 +185,43 @@
             let rxy2 = document.getElementById('nrxy_xy2').value;
 			document.getElementById('nrxy').value=(b1-b2)/(rxy1-rxy2)/1000./e/1.e15;
 		}
-        
-        
-        
+		function cal_ez(){
+			let b = document.getElementById('ez_b').value;
+			let g = document.getElementById('ez_g').value;
+			document.getElementById('ez').value=g*miub*b/e*1000.;
+		}
+		function cal_hw(){
+			let b = document.getElementById('hw_b').value;
+			let m = document.getElementById('hw_m').value;
+			document.getElementById('hw').value=hbar*b/me/m*1000.;
+		}        
+		function cal_murxx(){
+			let rxx = document.getElementById('murxx_rxx').value;
+            let n = document.getElementById('murxx_n').value;
+			let l = document.getElementById('murxx_l').value;
+			let w = document.getElementById('murxx_w').value;
+			document.getElementById('murxx').value=1/n/1.e15/e/rxx*l/w*10000./1000000.;
+		}             
+		function cal_kfn(){
+			let n = document.getElementById('kfn_n').value;
+			document.getElementById('kfn').value=Math.sqrt(2*Math.PI*n*1.e15)/1.e9;
+		}
+        function cal_lamn(){
+			let n = document.getElementById('lamn_n').value;
+			document.getElementById('lamn').value=Math.sqrt(2*Math.PI/n/1.e15)*1.e9;
+		}
+        function cal_efnm(){
+			let n = document.getElementById('efnm_n').value;
+            let m = document.getElementById('efnm_m').value;
+			document.getElementById('efnm').value=hbar*hbar*Math.PI*n*1.e15/me/m/e*1000.;
+		}
+     
+        function cal_enmd(){
+            let m = document.getElementById('enmd_m').value;
+            let d = document.getElementById('enmd_d').value;
+            let n = document.getElementById('enmd_n').value;
+			document.getElementById('enmd').value=h*h*n*n/8./me/m/d/d*1.e18/e*1000.;
+		}
         </script>
 	<script type="text/x-mathjax-config">
 		  MathJax.Hub.Config({
