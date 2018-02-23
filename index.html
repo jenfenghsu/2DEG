@@ -13,20 +13,17 @@
         </style> 
 	</head>
 	<body>
-		<div id='constant'></div>
+		<div id='constant', style='background:#ddd'></div>
 		<table id='maintable'>
-			<tr>
-				<td></td>
-				<td><input style="width:180px" type="number" id="cal_oupt" disabled=true/></td>
-				<td><button onClick="cal()"> calc </button></td>
-                <td>input:</td><td colspan="5"><input style="width:300px" type="text" id="cal_inpt"/></td>
-			</tr>
 		</table>
 	</body>
 	<script type="text/javascript">
 		//constant
 		const e = 1.602176565e-19;//C, Elementary charge
-		t = 'e: '+e+'<br>';
+		t = 'e: '+e;
+		t += '&emsp;&emsp;&emsp;&emsp;<td><input style="width:180px" type="text" id="cal_oupt" disabled=true/></td>';
+		t += '<td><button onClick="cal()"> calc </button></td>';
+		t += '<td>&emsp;expression:</td><td colspan="5"><input style="width:300px" type="text" id="cal_inpt"/></td><br>';
 		const eps0 = 8.854187817e-12;//F/m, vacuum permittivity
 		t +='eps0: '+eps0+'<br>';
 		const h = 6.62606957e-34;
