@@ -3,13 +3,8 @@
 	<head>
 		<meta charset="UTF-8"/>
 		<title>2DEG calculator</title>
-        <style type="text/css">
-            td{
-                text-align:center;
-            }
-        </style> 
 	</head>
-	<body>
+	<body style="background-color:#EEF">
 		<div id='constant', style='background:#ddd'></div>
 		<table id='table_0d_1d' bgcolor='#edb'></table>
 		<table id='table_2d' bgcolor='#dec'></table>
@@ -63,15 +58,37 @@
 			let d = document.getElementById('Cnanowire_d').value;
 			document.getElementById('Cnanowire').value=2.*Math.PI*eps0*epsr*L/Math.log(4.*h/d)/1.e-18;
 		}
-		addFormula('table_0d_1d','C = 2 \\pi \\epsilon \\frac{L}{\\ln (4h/d)} = 40.1 \\frac{L (\\mathrm{um}) \\epsilon_r}{\\ln (h/d)} \\mathrm{aF}',
+		addFormula('table_0d_1d','C_{nanowire} = 2 \\pi \\epsilon \\frac{L}{\\ln (4h/d)} = 40 \\epsilon_r \\frac{L (\\mathrm{um}) }{\\ln (h/d)} \\mathrm{aF}',
 			'Cnanowire',['\\epsilon_r','L','h','d'],['Cnanowire_e','Cnanowire_L','Cnanowire_h','Cnanowire_d'],[1,1,1,1]);
         function cal_Csphere(){
             let epsr = document.getElementById('Csphere_e').value;
 			let R = document.getElementById('Csphere_R').value/1.e6;
 			document.getElementById('Csphere').value=4.*Math.PI*eps0*epsr*R/1.e-18;
 		}
-		addFormula('table_0d_1d','C = 4 \\pi \\epsilon R = 111 \\epsilon_r R(\\mathrm{um}) \\mathrm{aF}',
+		addFormula('table_0d_1d','C_{sphere} = 4 \\pi \\epsilon R = 111 \\epsilon_r R(\\mathrm{um}) \\mathrm{aF}',
 			'Csphere',['\\epsilon_r','R'],['Csphere_e','Csphere_R'],[1,1]);
+        function cal_Cdisk(){
+            let epsr = document.getElementById('Cdisk_e').value;
+			let R = document.getElementById('Cdisk_R').value/1.e6;
+			document.getElementById('Cdisk').value=8.*eps0*epsr*R/1.e-18;
+		}
+		addFormula('table_0d_1d','C_{disk} = 8 \\epsilon R = 71 \\epsilon_r R(\\mathrm{um}) \\mathrm{aF}',
+			'Cdisk',['\\epsilon_r','R'],['Cdisk_e','Cdisk_R'],[1,1]);
+		function cal_Cplate(){
+            let epsr = document.getElementById('Cplate_e').value;
+			let L = document.getElementById('Cplate_L').value/1.e6;
+			let W = document.getElementById('Cplate_W').value/1.e6;
+			let d = document.getElementById('Cplate_d').value/1.e6;
+			document.getElementById('Cplate').value=eps0*epsr*L*W/d/1.e-18;
+		}
+		addFormula('table_0d_1d','C_{plate} = \\frac{\\epsilon A}{d} = 9 \\epsilon_r \\frac{ L W}{d}(\\mathrm{um})   \\mathrm{aF}',
+			'Cplate',['\\epsilon_r','L','W','d'],['Cplate_e','Cplate_L','Cplate_W','Cplate_d'],[1,10,10,0.1]);
+        function cal_Echarging(){
+            let C = document.getElementById('Echarging_C').value*1e-18;
+			document.getElementById('Echarging').value=e/C*1000.;
+		}
+		addFormula('table_0d_1d','E_{charging} = \\frac{e^2}{C} = \\frac{160}{C(\\mathrm{aF})}\\mathrm{meV}',
+			'Echarging',['C'],['Echarging_C'],[1]);
 		//end 1D and 0D
 		//begin 2D
 		function cal_lb(){
