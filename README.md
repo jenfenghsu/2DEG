@@ -1,2 +1,2 @@
 # 2DEG calculator
-https://cover-me.github.io/2DEG/
+https://jenfenghsu.github.io/2DEG/
