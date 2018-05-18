@@ -51,6 +51,11 @@
 		}
 		//begin funtions of formula
 		//begin 1D and 0D
+	function cal_fresonator(){
+	    let epsr = document.getElementById('fres_epsr').value;
+			let L = document.getElementById('fresonator_L').value;
+		}
+	    	addFormula('table_MW','f = \\frac{c / \\sqrt{\\epsilon_r}}{4L}','fresonator',['\\epsilon_r','L'],['fres_epsr','fres_L'],[1,1]);
         function cal_Csphere(){
             let epsr = document.getElementById('Csphere_e').value;
 			let R = document.getElementById('Csphere_R').value/1.e6;
