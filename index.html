@@ -2,33 +2,34 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<title>2DEG calculator</title>
+		<title>Calculators</title>
 	</head>
 	<body style="background-color:#EEF">
 		<div id='constant', style='background:#ddd'></div>
+           <table id='table_MW' bgcolor='#dec'></table>
 		<table id='table_0d_1d' bgcolor='#edb'></table>
 		<table id='table_2d' bgcolor='#dec'></table>
 	</body>
 	<script type="text/javascript">
 		//define constants which will be shown and used later, in SI units
 		const e = 1.602176565e-19;//C, Elementary charge
-		t = 'e: '+e+'<br>';
+		t = '$e$: '+e+' C<br>';
 		const eps0 = 8.854187817e-12;//F/m, vacuum permittivity
-		t +='eps0: '+eps0+'<br>';
+		t +='$\\epsilon_0$: '+eps0+' F/m<br>';
 		const h = 6.62606957e-34;//
-		t +='h: '+h+'<br>';
+		t +='$h$: '+h+' J&middot s<br>';
 		const hbar = 1.054571726e-34;//
-		t +='hbar: '+hbar+'<br>';
-		const me = 9.10938291e-31;//mass of an electron
-		t +='me: '+me+'<br>';
+		t +='$\\hbar$: '+hbar+' J&middot s<br>';
+//		const me = 9.10938291e-31;//mass of an electron
+//		t +='$m_e$: '+me+'<br>';
 		const kb = 1.3806505e-23;//Boltzmann constant
-		t +='kb: '+kb+'<br>';
-		const u = 1.660538921e-27;//atomic mass constant
-		t +='u: '+u+'<br>';
+		t +='$k_B$: '+kb+' J/K<br>';
+//		const u = 1.660538921e-27;//atomic mass constant
+//		t +='u: '+u+'<br>';
 		const c = 299792458;
-		t +='c: '+c+'<br>';
-		const miub = 9.27400949e-24;//bo er ci zi?
-		t +='miub: '+miub;
+		t +='$c$: '+c+' m/s<br>';
+//		const miub = 9.27400949e-24;//bo er ci zi?
+//		t +='miub: '+miub;
 		t += '&emsp;&emsp;&emsp;&emsp;<td><input style="width:150px" type="text" id="cal_oupt" disabled=true/></td>';
 		t += '<td><button onClick="cal()"> calc </button></td>';
 		t += '<td>&emsp;expression:</td><td colspan="5"><input style="width:300px" type="text" id="cal_inpt" value="h/Math.pow(e,2)/1000"/></td><br>';
@@ -49,43 +50,97 @@
 			t += '</tr>'
 			document.getElementById(tableID).innerHTML += t;
 		}
+		function addFormula_wdes(tableID,des,f,id,u,v,w){
+			//tableID is HTML id of which table to put the formula
+                 //d is a string describing the formula
+			//f is latex string of a formula, id is an HTML id for this formula,
+			//u, v, w are arrays of variable name, variable HTML id and variable default value
+			t = '<tr><td><b>'+des+'</b></td></tr><tr><td>$'+f+'$</td><td><input style="width:180px" type="number" id="'+id+'" disabled=true/></td><td><button onClick="cal_'+id+'()"> calc </button></td>';
+			for (i = 0; i < v.length; i++) { 
+				t += '<td>$'+u[i]+'$:</td><td><input style="width:60px" type="number" id="'+v[i]+'"/ value='+w[i]+'></td>';
+			}
+			t += '</tr>'
+			document.getElementById(tableID).innerHTML += t;
+		}
 		//begin funtions of formula
-		//begin 1D and 0D
-	function cal_fresonator(){
+           //begin MW
+        function cal_qualambda_fres(){
 	    let epsr = document.getElementById('fres_epsr').value;
-			let L = document.getElementById('fresonator_L').value;
-			document.getElementById('fresonator').value=c/epsr/(4.*L);
+			let L = document.getElementById('fres_L').value *1E-6;
+			document.getElementById('qualambda_fres').value=c / Math.sqrt(epsr) / (4. * L) / 1E9; 
 		}
-	    	addFormula('table_0d_1d','f = \\frac{c / \\sqrt{\\epsilon_r}}{4L}','fresonator',['\\epsilon_r','L'],['fres_epsr','fres_L'],[1,1]);
-        function cal_Csphere(){
-            let epsr = document.getElementById('Csphere_e').value;
-			let R = document.getElementById('Csphere_R').value/1.e6;
-			document.getElementById('Csphere').value=4.*Math.PI*eps0*epsr*R/1.e-18;
+	    	addFormula_wdes('table_MW','Quarter-wavelength Resonator Frequency','\\displaystyle f =  \\frac{c / \\sqrt{\\epsilon_r}}{\\lambda} = \\frac{c / \\sqrt{\\epsilon_r}}{4L} (\\mathrm{GHz})','qualambda_fres',['\\epsilon_r','L (\\mu \\mathrm m)'],['fres_epsr','fres_L'],[9.8,1000]);
+
+        function cal_halflambda_fres(){
+	    let epsr = document.getElementById('halflambda_fres_epsr').value;
+			let L = document.getElementById('halflambda_fres_L').value *1E-6; // Converted to meter
+			document.getElementById('halflambda_fres').value=c / Math.sqrt(epsr) / (2. * L) / 1E9;  // Shown in GHz
 		}
-		addFormula('table_0d_1d','C_{sphere} = 4 \\pi \\epsilon R = 111 \\epsilon_r R(\\mathrm{um}) \\mathrm{aF}',
-			'Csphere',['\\epsilon_r','R'],['Csphere_e','Csphere_R'],[1,1]);
-        function cal_Cdisk(){
-            let epsr = document.getElementById('Cdisk_e').value;
-			let R = document.getElementById('Cdisk_R').value/1.e6;
-			document.getElementById('Cdisk').value=8.*eps0*epsr*R/1.e-18;
-		}
-		addFormula('table_0d_1d','C_{disk} = 8 \\epsilon R = 71 \\epsilon_r R(\\mathrm{um}) \\mathrm{aF}',
-			'Cdisk',['\\epsilon_r','R'],['Cdisk_e','Cdisk_R'],[1,1]);
-		function cal_Cplate(){
-            let epsr = document.getElementById('Cplate_e').value;
-			let L = document.getElementById('Cplate_L').value/1.e6;
-			let W = document.getElementById('Cplate_W').value/1.e6;
-			let d = document.getElementById('Cplate_d').value/1.e6;
-			document.getElementById('Cplate').value=eps0*epsr*L*W/d/1.e-18;
-		}
-		addFormula('table_0d_1d','C_{plate} = \\frac{\\epsilon A}{d} = 9 \\epsilon_r \\frac{ L W}{d}(\\mathrm{um})   \\mathrm{aF}',
-			'Cplate',['\\epsilon_r','L','W','d'],['Cplate_e','Cplate_L','Cplate_W','Cplate_d'],[1,10,10,0.1]);
-        function cal_Echarging(){
-            let C = document.getElementById('Echarging_C').value*1e-18;
-			document.getElementById('Echarging').value=e/C*1000.;
-		}
-		addFormula('table_0d_1d','E_{charging} = \\frac{e^2}{C} = \\frac{160}{C(\\mathrm{aF})}\\mathrm{meV}',
-			'Echarging',['C'],['Echarging_C'],[1]);
+	    	addFormula_wdes('table_MW','Half-wavelength Resonator Frequency','\\displaystyle f =  \\frac{c / \\sqrt{\\epsilon_r}}{\\lambda} = \\frac{c / \\sqrt{\\epsilon_r}}{2L} (\\mathrm{GHz})','halflambda_fres',['\\epsilon_r','L (\\mu \\mathrm m)'],['halflambda_fres_epsr','halflambda_fres_L'],[9.8,1000]);
+
+        function cal_detection_nbar(){
+          let power = document.getElementById('detection_nbar_VNA_power').value;
+          let power_lin = Math.pow(10.,(power / 10.)) * 1.E-3; // Converted to W
+          let attn = document.getElementById('detection_nbar_attn').value;
+          let attn_lin = Math.pow(10.,(attn / 10.)); // Converted to linear
+          let f = document.getElementById('detection_nbar_f').value * 1.E9; // Converted to Hz
+          let Q = document.getElementById('detection_nbar_Q').value;
+          document.getElementById('detection_nbar').value = (power_lin * attn_lin) / (h * f) / (f / Q) ;
+            }
+	    	addFormula_wdes('table_MW',
+                            'Detection Average Occupancy, </b>$P_\\mathrm{VNA,out}$: VNA output power, $A$: Total attenuation before device. <b>',
+                            '\\displaystyle \\bar{n} = \\frac{P_\\mathrm{VNA,out} A / hf_0}{\\kappa} = \\frac{P_\\mathrm{VNA,out} A / hf_0}{f_0/Q}',
+                            'detection_nbar',
+                            ['P_\\mathrm{VNA,out} \\mathrm{(dbm)}','A \\mathrm{(db)}','f_0 \\mathrm{(GHz)}','Q'],
+                            ['detection_nbar_VNA_power','detection_nbar_attn','detection_nbar_f','detection_nbar_Q'],
+                            [-10,-50,2.0,5000]);
+
+        function cal_thermal_nbar(){
+          let temp = document.getElementById('thermal_nbar_temp').value;
+          let freq = document.getElementById('thermal_nbar_freq').value * 1.E9; // Converted to Hz
+          document.getElementById('thermal_nbar').value= kb * temp / h / freq;
+            }
+	    	addFormula_wdes('table_MW',
+                            'Thermal Average Occupancy',
+                            '\\displaystyle \\bar{n} = k_BT/\\hbar\\omega ',
+                            'thermal_nbar',
+                            ['T (\\mathrm{K})','f (\\mathrm{GHz})'],
+                            ['thermal_nbar_temp','thermal_nbar_freq'],
+                            [0.05,2.0]);
+
+           //end MW
+
+
+		//begin 1D and 0D
+//        function cal_Csphere(){
+//            let epsr = document.getElementById('Csphere_e').value;
+//			let R = document.getElementById('Csphere_R').value/1.e6;
+//			document.getElementById('Csphere').value=4.*Math.PI*eps0*epsr*R/1.e-18;
+//		}
+//		addFormula('table_0d_1d','C_{sphere} = 4 \\pi \\epsilon R = 111 \\epsilon_r R(\\mathrm{um}) \\mathrm{aF}',
+//			'Csphere',['\\epsilon_r','R'],['Csphere_e','Csphere_R'],[1,1]);
+//        function cal_Cdisk(){
+//            let epsr = document.getElementById('Cdisk_e').value;
+//			let R = document.getElementById('Cdisk_R').value/1.e6;
+//			document.getElementById('Cdisk').value=8.*eps0*epsr*R/1.e-18;
+//		}
+//		addFormula('table_0d_1d','C_{disk} = 8 \\epsilon R = 71 \\epsilon_r R(\\mathrm{um}) \\mathrm{aF}',
+//			'Cdisk',['\\epsilon_r','R'],['Cdisk_e','Cdisk_R'],[1,1]);
+//	  function cal_Cplate(){
+//            let epsr = document.getElementById('Cplate_e').value;
+//			let L = document.getElementById('Cplate_L').value/1.e6;
+//			let W = document.getElementById('Cplate_W').value/1.e6;
+//			let d = document.getElementById('Cplate_d').value/1.e6;
+//			document.getElementById('Cplate').value=eps0*epsr*L*W/d/1.e-18;
+//		}
+//		addFormula('table_0d_1d','C_{plate} = \\frac{\\epsilon A}{d} = 9 \\epsilon_r \\frac{ L W}{d}(\\mathrm{um})   \\mathrm{aF}',
+//			'Cplate',['\\epsilon_r','L','W','d'],['Cplate_e','Cplate_L','Cplate_W','Cplate_d'],[1,10,10,0.1]);
+//        function cal_Echarging(){
+//            let C = document.getElementById('Echarging_C').value*1e-18;
+//			document.getElementById('Echarging').value=e/C*1000.;
+//		}
+//		addFormula('table_0d_1d','E_{charging} = \\frac{e^2}{C} = \\frac{160}{C(\\mathrm{aF})}\\mathrm{meV}',
+//			'Echarging',['C'],['Echarging_C'],[1]);
 		//end 1D and 0D
 		//end funtions of formula
 		MathJax.Hub.Queue(["Typeset",MathJax.Hub,"maintable"]);//let MathJax know HTML has been changed
