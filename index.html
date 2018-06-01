@@ -71,12 +71,38 @@
 		}
 	    	addFormula_wdes('table_MW','Quarter-wavelength Resonator Frequency','\\displaystyle f =  \\frac{c / \\sqrt{\\epsilon_r}}{\\lambda} = \\frac{c / \\sqrt{\\epsilon_r}}{4L} (\\mathrm{GHz})','qualambda_fres',['\\epsilon_r','L (\\mu \\mathrm m)'],['fres_epsr','fres_L'],[9.8,1000]);
 
+        function cal_qualambda_l(){
+	    let epsr = document.getElementById('qualambda_l_epsr').value;
+			let f = document.getElementById('qualambda_l_f').value *1E9; // Converted to hertz
+			document.getElementById('qualambda_l').value=c / Math.sqrt(epsr) / (4. * f) * 1.E6;  // Shown in micron
+		}
+	    	addFormula_wdes('table_MW',
+                            'Quarter-wavelength Resonator Length',
+                            '\\displaystyle L = \\lambda/4 = \\frac{c / \\sqrt{\\epsilon_r}}{4f} (\\mu\\mathrm{m})',
+                            'qualambda_l',
+                            ['\\epsilon_r','f (\\mathrm{GHz})'],
+                            ['qualambda_l_epsr','qualambda_l_f'],
+                            [9.8,6000]);
+
         function cal_halflambda_fres(){
 	    let epsr = document.getElementById('halflambda_fres_epsr').value;
 			let L = document.getElementById('halflambda_fres_L').value *1E-6; // Converted to meter
 			document.getElementById('halflambda_fres').value=c / Math.sqrt(epsr) / (2. * L) / 1E9;  // Shown in GHz
 		}
 	    	addFormula_wdes('table_MW','Half-wavelength Resonator Frequency','\\displaystyle f =  \\frac{c / \\sqrt{\\epsilon_r}}{\\lambda} = \\frac{c / \\sqrt{\\epsilon_r}}{2L} (\\mathrm{GHz})','halflambda_fres',['\\epsilon_r','L (\\mu \\mathrm m)'],['halflambda_fres_epsr','halflambda_fres_L'],[9.8,1000]);
+
+        function cal_halflambda_l(){
+	    let epsr = document.getElementById('halflambda_l_epsr').value;
+			let f = document.getElementById('halflambda_l_f').value *1E9; // Converted to hertz
+			document.getElementById('halflambda_l').value=c / Math.sqrt(epsr) / (2. * f) * 1.E6;  // Shown in micron
+		}
+	    	addFormula_wdes('table_MW',
+                            'Half-wavelength Resonator Length',
+                            '\\displaystyle L = \\lambda/2 = \\frac{c / \\sqrt{\\epsilon_r}}{2f} (\\mu\\mathrm{m})',
+                            'halflambda_l',
+                            ['\\epsilon_r','f (\\mathrm{GHz})'],
+                            ['halflambda_l_epsr','halflambda_l_f'],
+                            [9.8,6000]);
 
         function cal_detection_nbar(){
           let power = document.getElementById('detection_nbar_VNA_power').value;
