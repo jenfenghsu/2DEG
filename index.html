@@ -28,6 +28,8 @@
 //		t +='u: '+u+'<br>';
 		const c = 299792458;
 		t +='$c$: '+c+' m/s<br>';
+           const phi0 = 2.067833831e-15;
+           t +='$\\varphi_0$: '+phi0+' Wb<br>';
 //		const miub = 9.27400949e-24;//bo er ci zi?
 //		t +='miub: '+miub;
 		t += '&emsp;&emsp;&emsp;&emsp;<td><input style="width:150px" type="text" id="cal_oupt" disabled=true/></td>';
@@ -77,8 +79,6 @@
                             ['\\epsilon_r','L (\\mu \\mathrm m)','\\alpha'],
                             ['fres_epsr','fres_L','qualambda_fres_alpha'],
                             [9.8,1000.,0.]);
-
-
         function cal_qualambda_l(){
 	    let epsr = document.getElementById('qualambda_l_epsr').value;
 			let f = document.getElementById('qualambda_l_f').value *1E9; // Converted to hertz
@@ -91,8 +91,6 @@
                             ['\\epsilon_r','f (\\mathrm{GHz})'],
                             ['qualambda_l_epsr','qualambda_l_f'],
                             [9.8,4.0]);
-
-
         function cal_halflambda_fres(){
 	    let epsr = document.getElementById('halflambda_fres_epsr').value;
 			let L = document.getElementById('halflambda_fres_L').value *1E-6; // Converted to meter
@@ -106,8 +104,6 @@
                             ['\\epsilon_r','L (\\mu \\mathrm m)','\\alpha'],
                             ['halflambda_fres_epsr','halflambda_fres_L','halflambda_fres_alpha'],
                             [9.8,1000,0.]);
-
-
         function cal_halflambda_l(){
 	    let epsr = document.getElementById('halflambda_l_epsr').value;
 			let f = document.getElementById('halflambda_l_f').value *1E9; // Converted to hertz
@@ -120,8 +116,6 @@
                             ['\\epsilon_r','f (\\mathrm{GHz})'],
                             ['halflambda_l_epsr','halflambda_l_f'],
                             [9.8,6000]);
-
-
         function cal_detection_nbar(){
           let power = document.getElementById('detection_nbar_VNA_power').value;
           let power_lin = Math.pow(10.,(power / 10.)) * 1.E-3; // Converted to W
@@ -138,7 +132,6 @@
                             ['P_\\mathrm{VNA,out} \\mathrm{(dbm)}','A \\mathrm{(db)}','f_0 \\mathrm{(GHz)}','Q'],
                             ['detection_nbar_VNA_power','detection_nbar_attn','detection_nbar_f','detection_nbar_Q'],
                             [-10,-50,2.0,5000]);
-
         function cal_thermal_nbar(){
           let temp = document.getElementById('thermal_nbar_temp').value;
           let freq = document.getElementById('thermal_nbar_freq').value * 1.E9; // Converted to Hz
@@ -151,9 +144,70 @@
                             ['T (\\mathrm{K})','f (\\mathrm{GHz})'],
                             ['thermal_nbar_temp','thermal_nbar_freq'],
                             [0.05,2.0]);
+        function cal_sheet_KI(){
+          let Rsq = document.getElementById('sheet_KI_Rsq').value;
+          let Tc = document.getElementById('sheet_KI_Tc').value;
+          let T = document.getElementById('sheet_KI_T').value / 1000.; // Converted to K
+          document.getElementById('sheet_KI').value = Rsq * h / (2.0 * Math.pow(Math.PI,2) * (1.764 * kb * Tc) * Math.tanh(1.764 * kb * Tc / (2.*kb*T))) * 1.E12; // Converted to pH
+            }
+            addFormula_wdes('table_MW',
+                            'Sheet Kinetic Inductance, </b>$\\Delta = 1.764 k_\\mathrm{B}T_{\\mathrm{c}}$ <b>',          
+                            '\\displaystyle \\mathcal{L_k} = \\frac{R_{\\mathrm{sq}} h}{2\\pi^2\\Delta} \\frac{1}{\\tanh{\\left(\\frac{\\Delta}{2k_\\mathrm{B}T}\\right)}} (\\mathrm{pH/\\square})',
+                            'sheet_KI',
+                            ['R_{\\mathrm{sq}} (\\Omega/\\square)','T_{\\mathrm{c}} (\\mathrm{K})','T (\\mathrm{mK})'],
+                            ['sheet_KI_Rsq','sheet_KI_Tc','sheet_KI_T'],
+                            [200.0,9.0,30]);
+        function cal_KI_per_l(){
+          let sheet_KI = document.getElementById('KI_per_l_sheet_KI').value;
+          let w = document.getElementById('KI_per_l_w').value * 1.E-9; // Converted to m
+          document.getElementById('KI_per_l').value = sheet_KI / w / 1.E6 / 1.E3; // Converted to per micron, then to nano Henry
+            }
+            addFormula_wdes('table_MW',
+                            'Kinetic Inductance per Unit Length </b>(Geometrical Inductance $\\sim 1$ pH/$\\mu$m) <b>',          
+                            '\\displaystyle L_k/l = \\mathcal{L_k}/w (\\mathrm{nH}/\\mu\\mathrm{m})',
+                            'KI_per_l',
+                            ['\\mathcal{L_k} (\\mathrm{pH/\\square})','w (\\mathrm{nm})'],
+                            ['KI_per_l_sheet_KI','KI_per_l_w'],
+                            [30.,100]);
+
+        function cal_KI(){
+          let sheet_KI = document.getElementById('KI_sheet_KI').value;
+          let w = document.getElementById('KI_w').value * 1.E-9; // Converted to m
+          let l = document.getElementById('KI_l').value * 1.E-6; // Converted to m
+          document.getElementById('KI').value = sheet_KI * l / w / 1.E3; // Converted to nano Henry
+            }
+            addFormula_wdes('table_MW',
+                            'Kinetic Inductance of Wire',          
+                            '\\displaystyle L_k = \\mathcal{L_k}\\left(\\frac{l}{w}\\right) (\\mathrm{nH})',
+                            'KI',
+                            ['\\mathcal{L_k} (\\mathrm{pH/\\square})','l (\\mu\\mathrm{m})','w (\\mathrm{nm})'],
+                            ['KI_sheet_KI','KI_l','KI_w'],
+                            [0.3,1000,100]);
+
+        function cal_EL(){
+          let L = document.getElementById('EL_L').value * 1.E-9; // Converted to H
+          document.getElementById('EL').value = Math.pow((phi0 / 2.0 / Math.PI), 2) / L / h / 1.E9;
+            }
+            addFormula_wdes('table_MW',
+                            'Inductive Energy',
+                            '\\displaystyle E_L/h = \\frac{\\left( \\varphi_0/2\\pi \\right)^2}{L} (\\mathrm{GHz})',
+                            'EL',
+                            ['L (\\mathrm{nH})'],
+                            ['EL_L'],
+                            [300.0]);
+        function cal_EC(){
+          let C = document.getElementById('EC_C').value * 1.E-15; // Converted to F
+          document.getElementById('EC').value = Math.pow(e, 2) / 2 / C / h / 1.E9;
+            }
+            addFormula_wdes('table_MW',
+                            'Capacitive Energy',
+                            '\\displaystyle E_C/h = \\frac{ e^2}{2C} (\\mathrm{GHz})',
+                            'EC',
+                            ['C (\\mathrm{fF})'],
+                            ['EC_C'],
+                            [50.0]);
 
            //end MW
-
 
 		//begin 1D and 0D
 //        function cal_Csphere(){
