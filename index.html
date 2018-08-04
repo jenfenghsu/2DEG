@@ -206,7 +206,21 @@
                             ['C (\\mathrm{fF})'],
                             ['EC_C'],
                             [50.0]);
-
+        function cal_scan_time(){
+          let fstart = document.getElementById('scan_time_fstart').value * 1.E9; // Converted to Hz
+          let fstop = document.getElementById('scan_time_fstop').value * 1.E9; // Converted to Hz
+          let df = document.getElementById('scan_time_df').value * 1.E3; // Converted to Hz
+          let ifbw = document.getElementById('scan_time_ifbw').value * 1.E3; // Converted to Hz
+          let navg = document.getElementById('scan_time_navg').value;
+          document.getElementById('scan_time').value = navg * (1./ifbw) * (fstop - fstart) / df / 3600.;
+            }
+            addFormula_wdes('table_MW',
+                            'VNA Scan Time Estimate',
+                            '\\displaystyle t = n_\\mathrm{avg} \\times \\frac{1}{\\mathrm{ifbw}} \\left(f_\\mathrm{stop} - f_\\mathrm{start} \\right) / df (\\mathrm{hrs})',
+                            'scan_time',
+                            ['f_\\mathrm{start} (\\mathrm{GHz})','f_\\mathrm{stop} (\\mathrm{GHz})','df (\\mathrm{kHz})','\\mathrm{ifbw} (\\mathrm{kHz})','n_\\mathrm{avg}'],
+                            ['scan_time_fstart','scan_time_fstop','scan_time_df','scan_time_ifbw','scan_time_navg'],
+                            [2.0,8.0,1.0,1.0,10]);
            //end MW
 
 		//begin 1D and 0D
