@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -116,22 +117,42 @@
                             ['\\epsilon_r','f (\\mathrm{GHz})'],
                             ['halflambda_l_epsr','halflambda_l_f'],
                             [9.8,6000]);
-        function cal_detection_nbar(){
-          let power = document.getElementById('detection_nbar_VNA_power').value;
+        function cal_detection_nbar_symmetric(){
+          let power = document.getElementById('detection_nbar_symmetric_VNA_power').value;
           let power_lin = Math.pow(10.,(power / 10.)) * 1.E-3; // Converted to W
-          let attn = document.getElementById('detection_nbar_attn').value;
+          let attn = document.getElementById('detection_nbar_symmetric_attn').value;
           let attn_lin = Math.pow(10.,(attn / 10.)); // Converted to linear
-          let f = document.getElementById('detection_nbar_f').value * 1.E9; // Converted to Hz
-          let Q = document.getElementById('detection_nbar_Q').value;
-          document.getElementById('detection_nbar').value = (power_lin * attn_lin) / (h * f) / (f / Q) ;
+          let f = document.getElementById('detection_nbar_symmetric_f').value * 1.E9; // Converted to Hz
+          let Qt = document.getElementById('detection_nbar_symmetric_Qt').value;
+          let Qc = document.getElementById('detection_nbar_symmetric_Qc').value;
+          document.getElementById('detection_nbar_symmetric').value = (power_lin * attn_lin) * Qt**2 /( Math.PI * Qc * f**2 * h) ;
             }
 	    	addFormula_wdes('table_MW',
-                            'Detection Average Occupancy, </b>$P_\\mathrm{VNA,out}$: VNA output power, $A$: Total attenuation before device. <b>',
-                            '\\displaystyle \\bar{n} = \\frac{P_\\mathrm{VNA,out} A / hf_0}{\\kappa} = \\frac{P_\\mathrm{VNA,out} A / hf_0}{f_0/Q}',
-                            'detection_nbar',
-                            ['P_\\mathrm{VNA,out} \\mathrm{(dbm)}','A \\mathrm{(db)}','f_0 \\mathrm{(GHz)}','Q'],
-                            ['detection_nbar_VNA_power','detection_nbar_attn','detection_nbar_f','detection_nbar_Q'],
-                            [-10,-50,2.0,5000]);
+                            'Detection Average Occupancy (symmetric, Bruno), </b>$P_\\mathrm{VNA,out}$: VNA output power, $A$: Total attenuation before device, $Q_t$: Total $Q$. <b>',
+                            '\\displaystyle \\bar{n} = \\frac{P_\\mathrm{p} / hf_0}{\\kappa} = P_\\mathrm{VNA,out}A\\frac{Q_t^2}{\\pi Q_cf_0^2h}',
+                            'detection_nbar_symmetric',
+                            ['P_\\mathrm{VNA,out} \\mathrm{(dbm)}','A \\mathrm{(db)}','f_0 \\mathrm{(GHz)}','Qt','Qc'],
+                            ['detection_nbar_symmetric_VNA_power','detection_nbar_symmetric_attn','detection_nbar_symmetric_f','detection_nbar_symmetric_Qt','detection_nbar_symmetric_Qc'],
+                            [-40,-50,2.0,10000,10000])
+        function cal_detection_nbar_asymmetric(){
+          let power = document.getElementById('detection_nbar_asymmetric_VNA_power').value;
+          let power_lin = Math.pow(10.,(power / 10.)) * 1.E-3; // Converted to W
+          let attn = document.getElementById('detection_nbar_asymmetric_attn').value;
+          let attn_lin = Math.pow(10.,(attn / 10.)); // Converted to linear
+          let f0tild = document.getElementById('detection_nbar_asymmetric_f0tild').value * 1.E9; // Converted to Hz
+          let df = document.getElementById('detection_nbar_asymmetric_df').value * 1.E3; // Converted to Hz
+          let Qt = document.getElementById('detection_nbar_asymmetric_Qt').value;
+          let Qc = document.getElementById('detection_nbar_asymmetric_Qc').value;
+          let Qi = document.getElementById('detection_nbar_asymmetric_Qi').value;
+          document.getElementById('detection_nbar_asymmetric').value = (power_lin * attn_lin) / (Math.PI * f0tild**2 * h) * (Qt**2/Qc - 4.*Qt* Qi**2 * df**2/(f0tild-df)**2 ) ;
+            }
+	    	addFormula_wdes('table_MW',
+                            'Detection Average Occupancy (asymmetric), </b>$P_\\mathrm{VNA,out}$: VNA output power, $A$: Total attenuation before device, $\\delta f$: shift from natural, $\\tilde{f_0}=f_0+\\delta f$: Loaded resonance. <b>',
+                            '\\displaystyle \\bar{n} = \\frac{P_\\mathrm{p} / h\\tilde{f_0}}{\\kappa} = \\frac{P_\\mathrm{VNA,out}A}{\\pi \\tilde{f_0}^2h} \\left[ \\frac{Q_t^2}{Q_c} - 4Q_iQ_t^2\\frac{\\delta f^2}{\\left(\\tilde{f_0}-\\delta f\\right)^2} \\right]    ',
+                            'detection_nbar_asymmetric',
+                            ['P_\\mathrm{VNA,out} \\mathrm{(dbm)}','A \\mathrm{(db)}','\\tilde{f_0} \\mathrm{(GHz)}','\\delta f \\mathrm{(kHz)}','Qt','Qc','Qi'],
+                            ['detection_nbar_asymmetric_VNA_power','detection_nbar_asymmetric_attn','detection_nbar_asymmetric_f0tild','detection_nbar_asymmetric_df','detection_nbar_asymmetric_Qt','detection_nbar_asymmetric_Qc','detection_nbar_asymmetric_Qi'],
+                            [-40,-50,2.0,100,10000,10000,10000])
         function cal_thermal_nbar(){
           let temp = document.getElementById('thermal_nbar_temp').value;
           let freq = document.getElementById('thermal_nbar_freq').value * 1.E9; // Converted to Hz
@@ -169,7 +190,6 @@
                             ['\\mathcal{L_k} (\\mathrm{pH/\\square})','w (\\mathrm{nm})'],
                             ['KI_per_l_sheet_KI','KI_per_l_w'],
                             [30.,100]);
-
         function cal_KI(){
           let sheet_KI = document.getElementById('KI_sheet_KI').value;
           let w = document.getElementById('KI_w').value * 1.E-9; // Converted to m
@@ -183,7 +203,6 @@
                             ['\\mathcal{L_k} (\\mathrm{pH/\\square})','l (\\mu\\mathrm{m})','w (\\mathrm{nm})'],
                             ['KI_sheet_KI','KI_l','KI_w'],
                             [0.3,1000,100]);
-
         function cal_EL(){
           let L = document.getElementById('EL_L').value * 1.E-9; // Converted to H
           document.getElementById('EL').value = Math.pow((phi0 / 2.0 / Math.PI), 2) / L / h / 1.E9;
@@ -222,7 +241,6 @@
                             ['scan_time_fstart','scan_time_fstop','scan_time_df','scan_time_ifbw','scan_time_navg'],
                             [2.0,8.0,1.0,1.0,10]);
            //end MW
-
 		//begin 1D and 0D
 //        function cal_Csphere(){
 //            let epsr = document.getElementById('Csphere_e').value;
