@@ -144,7 +144,7 @@
           let Qt = document.getElementById('detection_nbar_asymmetric_Qt').value;
           let Qc = document.getElementById('detection_nbar_asymmetric_Qc').value;
           let Qi = document.getElementById('detection_nbar_asymmetric_Qi').value;
-          document.getElementById('detection_nbar_asymmetric').value = (power_lin * attn_lin) / (Math.PI * f0tild**2 * h) * (Qt**2/Qc - 4.*Qt* Qi**2 * df**2/(f0tild-df)**2 ) ;
+          document.getElementById('detection_nbar_asymmetric').value = (power_lin * attn_lin) / (Math.PI * f0tild**2 * h) * (Qt**2/Qc - 4.*Qi* Qt**2 * df**2/(f0tild-df)**2 ) ;
             }
 	    	addFormula_wdes('table_MW',
                             'Detection Average Occupancy (asymmetric), </b>$P_\\mathrm{VNA,out}$: VNA output power, $A$: Total attenuation before device, $\\delta f$: shift from natural, $\\tilde{f_0}=f_0+\\delta f$: Loaded resonance. <b>',
